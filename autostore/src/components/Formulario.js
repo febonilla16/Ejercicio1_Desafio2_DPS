@@ -2,18 +2,12 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, Image, Pressable, Modal, FlatList } from 'react-native';
 import { TextInput, Button, Text, HelperText, Snackbar, Portal, PaperProvider } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
+import { Picker } from '@react-native-picker/picker';
 import Servicio from './Servicio';
 
 const Formulario = ({modalVisible,setModalVisible}) => {
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
-    const tipoVehiculo = [
-        { label: 'Motocicleta', value: '1'},
-        { label: 'Sedán', value: '2'},
-        { label: 'Camioneta', value: '3'},
-        { label: 'Microbús', value: '4'},
-        { label: 'Bus', value: '5'},
-    ];
     const [placa, setPlaca] = useState('');
     const [color, setColor] = useState('');
     const [año, setAño] = useState(0);
@@ -30,6 +24,8 @@ const Formulario = ({modalVisible,setModalVisible}) => {
 
     const [costoServicio, setCostoServicio] = useState(0);
     const [total, setTotal] = useState(0);
+
+    const [servicios, setServicios] = useState([]);
 
     useEffect(() => {
       setTotal(((costoServicio*0.05) + (costoServicio*0.13) + costoServicio).toFixed(2));
@@ -166,10 +162,6 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         setMarca('');
     };
 
-    const [servicios, setServicios] = useState([]);
-   
-    const [value, setValue] = useState(null);
-
     const handleModal = () =>{
       setModalVisible(!modalVisible)
     };
@@ -193,21 +185,18 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         numberOfLines={1}
       />
       <Text>Datos del vehículo</Text>
-      <Dropdown
-        style={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
-        data={tipoVehiculo}
-        maxHeight={300}
-        labelField="label"
-        valueField="value"
-        value={tipoVehiculo.value}
-        onChange={item => {
-          handleVehiculo(item.value);
-        }}
-      />
+      <Picker
+        selectedValue={vehiculo}
+        onValueChange={(value) => {handleVehiculo(value)}}
+        style={styles.input}
+      >
+        <Picker.Item label='Seleccionar' value="0" />
+        <Picker.Item label='Motocicleta' value="1" />
+        <Picker.Item label='Sedán' value="2" />
+        <Picker.Item label='Camioneta' value="3" />
+        <Picker.Item label='Microbús' value="4" />
+        <Picker.Item label='Bus' value="5" />
+      </Picker>
       <TextInput
         label="Placa"
         value={placa}

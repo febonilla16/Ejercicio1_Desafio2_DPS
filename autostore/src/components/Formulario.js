@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, Image, Pressable, Modal, FlatList } from 'react-native';
 import { TextInput, Button, Text, HelperText, Snackbar, Portal, PaperProvider } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
-import { Picker } from '@react-native-picker/picker';
 import Servicio from './Servicio';
 
 const Formulario = ({modalVisible,setModalVisible}) => {
@@ -18,6 +17,13 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         { label: 'Lavado VIP', value: '3'},
         { label: 'Polarizado', value: '4'},
     ];
+    const tipoCar = [
+      { label: 'Motocicleta', value: '1'},
+      { label: 'Sedán', value: '2'},
+      { label: 'Camioneta', value: '3'},
+      { label: 'Microbús', value: '4'},
+      { label: 'Bus', value: '5'},
+  ];
 
     const [vehiculo, setVehiculo] = useState('');
     const [service, setService] = useState('');
@@ -156,7 +162,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
           total
         }
 
-        setServicios(...servicios, nuevoServicio);
+        setServicios([...servicios, nuevoServicio]);
         setModalVisible(!modalVisible);
 
         setNombre('');
@@ -190,18 +196,22 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         numberOfLines={1}
       />
       <Text>Datos del vehículo</Text>
-      <Picker
-        selectedValue={tipoVehiculo}
-        onValueChange={(value) => {handleVehiculo(value)}}
-        style={styles.input}
-      >
-        <Picker.Item label='Seleccionar' value="0" />
-        <Picker.Item label='Motocicleta' value="1" />
-        <Picker.Item label='Sedán' value="2" />
-        <Picker.Item label='Camioneta' value="3" />
-        <Picker.Item label='Microbús' value="4" />
-        <Picker.Item label='Bus' value="5" />
-      </Picker>
+      <Dropdown
+        style={styles.dropdown}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={tipoCar}
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder='Seleccione el tipo de vehiculo'
+        value={tipoVehiculo}
+        onChange={item => {
+          handleVehiculo(item.value);
+        }}
+      />
       <TextInput
         label="Placa"
         value={placa}
@@ -241,6 +251,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         maxHeight={300}
         labelField="label"
         valueField="value"
+        placeholder='Seleccione el tipo de servicio'
         value={tipoServicio}
         onChange={item => {
           handleServicio(item.value);

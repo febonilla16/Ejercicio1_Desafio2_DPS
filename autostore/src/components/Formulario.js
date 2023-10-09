@@ -9,7 +9,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
     const [apellido, setApellido] = useState('');
     const [placa, setPlaca] = useState('');
     const [color, setColor] = useState('');
-    const [año, setAño] = useState(0);
+    const [año, setAño] = useState('');
     const [marca, setMarca] = useState('');
     const tipoService = [
         { label: 'Lavado Básico', value: '1'},
@@ -66,13 +66,13 @@ const Formulario = ({modalVisible,setModalVisible}) => {
       switch (value) {
         case '1':
           setService('Lavado Básico');
-            if (vehiculo === '1') {
+            if (tipoVehiculo === '1') {
                 setCostoServicio(2.00);
-            } else if (vehiculo === '2') {
+            } else if (tipoVehiculo === '2') {
                 setCostoServicio(3.00);
-            } else if (vehiculo === '3') {
+            } else if (tipoVehiculo === '3') {
                 setCostoServicio(4.00);
-            } else if (vehiculo === '4') {
+            } else if (tipoVehiculo === '4') {
               setCostoServicio(5.00);
             } else {
               setCostoServicio(6.00);
@@ -80,13 +80,13 @@ const Formulario = ({modalVisible,setModalVisible}) => {
             break;
         case '2':
           setService('Lavado Premium');
-          if (vehiculo === '1') {
+          if (tipoVehiculo === '1') {
             setCostoServicio(2.50);
-          } else if (vehiculo === '2') {
+          } else if (tipoVehiculo === '2') {
             setCostoServicio(3.50);
-          } else if (vehiculo === '3') {
+          } else if (tipoVehiculo === '3') {
             setCostoServicio(4.50);
-          } else if (vehiculo === '4') {
+          } else if (tipoVehiculo === '4') {
           setCostoServicio(5.50);
           } else {
           setCostoServicio(6.50);
@@ -94,13 +94,13 @@ const Formulario = ({modalVisible,setModalVisible}) => {
           break;
         case '3':
           setService('Lavado VIP');
-          if (vehiculo === '1') {
+          if (tipoVehiculo === '1') {
             setCostoServicio(3.00);
-          } else if (vehiculo === '2') {
+          } else if (tipoVehiculo === '2') {
               setCostoServicio(4.00);
-          } else if (vehiculo === '3') {
+          } else if (tipoVehiculo === '3') {
               setCostoServicio(5.00);
-          } else if (vehiculo === '4') {
+          } else if (tipoVehiculo === '4') {
             setCostoServicio(6.00);
           } else {
             setCostoServicio(7.00);
@@ -108,14 +108,14 @@ const Formulario = ({modalVisible,setModalVisible}) => {
           break;
         case '4':
           setService('Polarizado');
-          if (vehiculo === '1') {
-            alert('No aplica el polarizado para motocicleta');
+          if (tipoVehiculo === '1') {
+            alert('El polarizado no aplica para motocicleta');
             return;
-          } else if (vehiculo === '2') {
+          } else if (tipoVehiculo === '2') {
               setCostoServicio(25.00);
-          } else if (vehiculo === '3') {
+          } else if (tipoVehiculo === '3') {
               setCostoServicio(35.00);
-          } else if (vehiculo === '4') {
+          } else if (tipoVehiculo === '4') {
             setCostoServicio(45.00);
           } else {
             setCostoServicio(60.00);
@@ -127,7 +127,8 @@ const Formulario = ({modalVisible,setModalVisible}) => {
     }
 
     const handleSubmit = () => {
-        if (nombre.trim() === '' || apellido.trim() === '' || placa.trim() === '' || color.trim() === '' || año.trim() === '' || marca.trim() === '') {
+      const formatoPlaca = /^P\w{1,6}/
+        if (nombre.trim() === '' || apellido.trim() === '' || placa.trim() === '' || color.trim() === '' || año.trim() === '' || marca.trim() === '' || tipoVehiculo === '' || tipoServicio === '') {
           alert('Todos los campos son obligatorios');
           return;
         }
@@ -145,6 +146,15 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         }
         if (!isNaN(parseInt(apellido))) {
           alert('No se aceptan números');
+          return;
+        }
+        if (año<1930 || año>2024)
+        {
+          alert('Ingrese un año válido (entre 1930 y 2024)');
+          return;
+        }
+        if (!formatoPlaca.test(placa)) {
+          alert('La placa no es válida, debe escribirse como P123456');
           return;
         }
 

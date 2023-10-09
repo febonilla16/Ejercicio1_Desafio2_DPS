@@ -171,6 +171,8 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         setPlaca('');
         setColor('');
         setMarca('');
+        setTipoServicio('');
+        setTipoVehiculo('');
     };
 
     const handleModal = () =>{

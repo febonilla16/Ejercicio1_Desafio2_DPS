@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, Image, Pressable, Modal } from 'react-native';
+import { View, ScrollView, StyleSheet, Image, Pressable, Modal, FlatList } from 'react-native';
 import { TextInput, Button, Text, HelperText, Snackbar, Portal, PaperProvider } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
 import Servicio from './Servicio';
@@ -25,12 +25,103 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         { label: 'Polarizado', value: '4'},
     ];
 
+    const [vehiculo, setVehiculo] = useState('');
+    const [service, setService] = useState('');
+
     const [costoServicio, setCostoServicio] = useState(0);
     const [total, setTotal] = useState(0);
 
+    useEffect(() => {
+      setTotal(((costoServicio*0.05) + (costoServicio*0.13) + costoServicio).toFixed(2));
+  }, [vehiculo,service,costoServicio]);
+
+    const handleVehiculo = (value) => {
+      switch (value) {
+        case '1':
+          setVehiculo('Motocicleta');
+          break;
+          case '2':
+            setVehiculo('Sedán');
+          break;
+          case '3':
+            setVehiculo('Camioneta');
+          break;
+          case '4':
+            setVehiculo('Microbús');
+          break;
+          case '5':
+            setVehiculo('Bus');
+          break;
+        default:
+          break;
+      }
+    }
+
+    const handleServicio = (value) => {
+      switch (value) {
+        case '1':
+          setService('Lavado Básico');
+            if (vehiculo === '1') {
+                setCostoServicio(2.00);
+            } else if (vehiculo === '2') {
+                setCostoServicio(3.00);
+            } else if (vehiculo === '3') {
+                setCostoServicio(4.00);
+            } else if (vehiculo === '4') {
+              setCostoServicio(5.00);
+            } else {
+              setCostoServicio(6.00);
+            } 
+            break;
+        case '2':
+          setService('Lavado Premium');
+          if (vehiculo === '1') {
+            setCostoServicio(2.50);
+          } else if (vehiculo === '2') {
+            setCostoServicio(3.50);
+          } else if (vehiculo === '3') {
+            setCostoServicio(4.50);
+          } else if (vehiculo === '4') {
+          setCostoServicio(5.50);
+          } else {
+          setCostoServicio(6.50);
+          } 
+          break;
+        case '3':
+          setService('Lavado VIP');
+          if (vehiculo === '1') {
+            setCostoServicio(3.00);
+          } else if (vehiculo === '2') {
+              setCostoServicio(4.00);
+          } else if (vehiculo === '3') {
+              setCostoServicio(5.00);
+          } else if (vehiculo === '4') {
+            setCostoServicio(6.00);
+          } else {
+            setCostoServicio(7.00);
+          } 
+          break;
+        case '4':
+          setService('Polarizado');
+          if (vehiculo === '1') {
+            alert('No aplica el polarizado para motocicleta');
+            return;
+          } else if (vehiculo === '2') {
+              setCostoServicio(25.00);
+          } else if (vehiculo === '3') {
+              setCostoServicio(35.00);
+          } else if (vehiculo === '4') {
+            setCostoServicio(45.00);
+          } else {
+            setCostoServicio(60.00);
+          } 
+          break;
+        default:
+            break;
+    }
+    }
+
     const handleSubmit = () => {
-        const impuesto = 0.13;
-        const propina = 0.05;
         if (nombre.trim() === '' || apellido.trim() === '' || placa.trim() === '' || color.trim() === '' || año.trim() === '' || marca.trim() === '') {
           alert('Todos los campos son obligatorios');
           return;
@@ -51,66 +142,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
           alert('No se aceptan números');
           return;
         }
-        
-        switch (tipoServicio.value) {
-            case '1':
-                if (tipoVehiculo.value === '1') {
-                    setCostoServicio(2.00);
-                } else if (tipoVehiculo.value === '2') {
-                    setCostoServicio(3.00);
-                } else if (tipoVehiculo.value === '3') {
-                    setCostoServicio(4.00);
-                } else if (tipoVehiculo.value === '4') {
-                  setCostoServicio(5.00);
-                } else {
-                  setCostoServicio(6.00);
-                } 
-                break;
-            case '2':
-              if (tipoVehiculo.value === '1') {
-                setCostoServicio(2.50);
-              } else if (tipoVehiculo.value === '2') {
-                setCostoServicio(3.50);
-              } else if (tipoVehiculo.value === '3') {
-                setCostoServicio(4.50);
-              } else if (tipoVehiculo.value === '4') {
-              setCostoServicio(5.50);
-              } else {
-              setCostoServicio(6.50);
-              } 
-              break;
-            case '3':
-              if (tipoVehiculo.value === '1') {
-                setCostoServicio(3.00);
-              } else if (tipoVehiculo.value === '2') {
-                  setCostoServicio(4.00);
-              } else if (tipoVehiculo.value === '3') {
-                  setCostoServicio(5.00);
-              } else if (tipoVehiculo.value === '4') {
-                setCostoServicio(6.00);
-              } else {
-                setCostoServicio(7.00);
-              } 
-              break;
-            case '4':
-              if (tipoVehiculo.value === '1') {
-                alert('No aplica el polarizado para motocicleta');
-                return;
-              } else if (tipoVehiculo.value === '2') {
-                  setCostoServicio(25.00);
-              } else if (tipoVehiculo.value === '3') {
-                  setCostoServicio(35.00);
-              } else if (tipoVehiculo.value === '4') {
-                setCostoServicio(45.00);
-              } else {
-                setCostoServicio(60.00);
-              } 
-              break;
-            default:
-                break;
-        }
-        setTotal(((costoServicio*propina) + (costoServicio*impuesto) + costoServicio).toFixed(2));
-        
+
         const nuevoServicio = {
           id : Date.now(),
           nombre,
@@ -122,7 +154,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
           costoServicio,
           total
         }
-        
+
         setServicios(...servicios, nuevoServicio);
         setModalVisible(!modalVisible);
 
@@ -149,14 +181,14 @@ const Formulario = ({modalVisible,setModalVisible}) => {
       <TextInput
         label="Nombre"
         value={nombre}
-        onChangeText={text => setNombre(text)}
+        onChangeText={setNombre}
         mode='outlined'
         numberOfLines={1}
       />
       <TextInput
         label="Apellido"
         value={apellido}
-        onChangeText={text => setApellido(text)}
+        onChangeText={setApellido}
         mode='outlined'
         numberOfLines={1}
       />
@@ -174,34 +206,34 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         placeholder="Seleccione un tipo de vehículo"
         value={value}
         onChange={item => {
-          setValue(item.value);
+          handleVehiculo(item.value);
         }}
       />
       <TextInput
         label="Placa"
         value={placa}
-        onChangeText={text => setPlaca(text)}
+        onChangeText={setPlaca}
         mode='outlined'
         numberOfLines={1}
       />
       <TextInput
         label="Color"
         value={color}
-        onChangeText={text => setColor(text)}
+        onChangeText={setColor}
         mode='outlined'
         numberOfLines={1}
       />
       <TextInput
         label="Año"
         value={año}
-        onChangeText={text => setAño(text)}
+        onChangeText={setAño}
         mode='outlined'
         numberOfLines={1}
       />
       <TextInput
         label="Marca"
         value={marca}
-        onChangeText={text => setMarca(marca)}
+        onChangeText={setMarca}
         mode='outlined'
         numberOfLines={1}
       />
@@ -219,7 +251,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         placeholder="Seleccione un tipo de servicio"
         value={value}
         onChange={item => {
-          setValue(item.value);
+          handleServicio(item.value);
         }}
       />
       <Button icon="send-lock" mode="contained" onPress={() => handleSubmit()}>

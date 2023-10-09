@@ -12,7 +12,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
     const [color, setColor] = useState('');
     const [año, setAño] = useState(0);
     const [marca, setMarca] = useState('');
-    const tipoServicio = [
+    const tipoService = [
         { label: 'Lavado Básico', value: '1'},
         { label: 'Lavado Premium', value: '2'},
         { label: 'Lavado VIP', value: '3'},
@@ -21,6 +21,9 @@ const Formulario = ({modalVisible,setModalVisible}) => {
 
     const [vehiculo, setVehiculo] = useState('');
     const [service, setService] = useState('');
+
+    const [tipoVehiculo, setTipoVehiculo] = useState('');
+    const [tipoServicio, setTipoServicio] = useState('');
 
     const [costoServicio, setCostoServicio] = useState(0);
     const [total, setTotal] = useState(0);
@@ -32,6 +35,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
   }, [vehiculo,service,costoServicio]);
 
     const handleVehiculo = (value) => {
+      setTipoVehiculo(value);
       switch (value) {
         case '1':
           setVehiculo('Motocicleta');
@@ -52,6 +56,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
     }
 
     const handleServicio = (value) => {
+      setTipoServicio(value);
       switch (value) {
         case '1':
           setService('Lavado Básico');
@@ -186,7 +191,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
       />
       <Text>Datos del vehículo</Text>
       <Picker
-        selectedValue={vehiculo}
+        selectedValue={tipoVehiculo}
         onValueChange={(value) => {handleVehiculo(value)}}
         style={styles.input}
       >
@@ -232,11 +237,11 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={tipoServicio}
+        data={tipoService}
         maxHeight={300}
         labelField="label"
         valueField="value"
-        value={tipoServicio.value}
+        value={tipoServicio}
         onChange={item => {
           handleServicio(item.value);
         }}

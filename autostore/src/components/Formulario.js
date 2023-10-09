@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button, Text, HelperText, Snackbar, Modal, Portal, PaperProvider } from 'react-native-paper';
+import { Dropdown } from 'react-native-element-dropdown';
 
 const Formulario = ({modalVisible,setModalVisible}) => {
     const [nombre, setNombre] = useState('');
@@ -112,7 +113,30 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         }
         setTotal(((costoServicio*propina) + (costoServicio*impuesto) + costoServicio).toFixed(2));
     };
+    const [servicios, setServicios] = useState([]);
 
+    const nuevoServicio = {
+      id : Date.now(),
+      nombre,
+      apellido,
+      año,
+      color,
+      placa,
+      marca,
+      costoServicio,
+      total
+    }
+
+    setServicios(...servicios, nuevoServicio);
+    setModalVisible(!modalVisible);
+
+    setNombre('');
+    setApellido('');
+    setAño(0);
+    setPlaca('');
+    setColor('');
+    setMarca('');
+    
     const [value, setValue] = useState(null);
 
     const handleModal = () =>{
@@ -176,7 +200,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         numberOfLines={1}
       />
       <TextInput
-        label="Placa"
+        label="Marca"
         value={marca}
         onChangeText={text => setMarca(marca)}
         mode='outlined'
@@ -202,6 +226,29 @@ const Formulario = ({modalVisible,setModalVisible}) => {
       <Button icon="send-lock" mode="contained" onPress={() => handleSubmit()}>
         Enviar
       </Button>
+
+      <Modal animationType='slide' visible={modalVisible}>
+        <View style={styles.contenedor}>
+          <Pressable style={styles.btnAtras} onPress={handleModal}>
+            <Text style={styles.btnText}></Text>
+            <Image source={require('../img/arrow-left.png')} style={styles.imagen}/>
+          </Pressable>
+            <Text style={styles.listaEmpleados}>Lista de servicios agendados</Text>  
+            {servicios.length === 0 ? <Text style={styles.sinEmpleados}>No hay servicios registrados</Text>: 
+          <FlatList
+            style={styles.listadoEmpleados}
+            data={servicios}
+            keyExtractor={(item) => item.id}
+            renderItem={({item}) => {
+              return(
+              <Empleado
+              item={item}/>
+              )
+            }}
+            />
+          }
+        </View>
+      </Modal>
     </>
   );
 };
@@ -262,7 +309,67 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-  }
+  },
+  label: {
+    color:'black', 
+    marginHorizontal:3,
+    marginBottom:10,
+    marginTop: 15,
+    fontSize:20,
+    fontWeight:'600'},
+  input: {
+      backgroundColor: '#FFF',
+      borderRadius: 10,
+      marginHorizontal: 1,
+      padding: 15,
+      marginBottom: 10
+    },
+  btnCalcular: {
+    backgroundColor: 'green',
+    padding:15,
+    marginTop:20,
+    borderRadius: 10
+  },btnAtras:{
+    backgroundColor: 'transparent',
+    padding:2,
+    marginTop:20,
+    borderRadius: 10,
+    marginRight: 290
+  },
+  btnInfoTexto: {
+    textAlign: 'center',
+    color:'#FFF',
+    fontSize:18,
+    fontWeight: '900',
+    textTransform: 'uppercase'
+
+  },
+  titulo:{
+    textAlign: 'center',
+    color: 'blue',
+    fontSize: 20,
+    marginBottom: 20,
+    textTransform: 'uppercase',
+    fontWeight: '600'
+  }, contenedor: {
+      marginTop: 32,
+      paddingHorizontal: 24,
+  },listadoEmpleados:{
+    marginTop:50,
+    marginHorizontal: 30,
+  }, listaEmpleados: {
+    marginTop: 20,
+    textAlign: 'center',
+    fontWeight:'900',
+    textTransform: 'uppercase',
+    color: 'blue',
+    fontSize: 20,
+  },btnText: {
+    padding: 0
+  }, imagen: {
+    width: 35,
+    height: 35,
+}
 });
 
 export default Formulario;

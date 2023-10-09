@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button, Text, HelperText, Snackbar, Modal, Portal, PaperProvider } from 'react-native-paper';
-import AntDesign from '@expo/vector-icons/AntDesign';
 
-const Formulario = () => {
+const Formulario = ({modalVisible,setModalVisible}) => {
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const tipoVehiculo = [
@@ -116,24 +115,12 @@ const Formulario = () => {
 
     const [value, setValue] = useState(null);
 
-    const renderItem = item => {
-      return (
-        <View style={styles.item}>
-          <Text style={styles.textItem}>{item.label}</Text>
-          {item.value === value && (
-            <AntDesign
-              style={styles.icon}
-              color="black"
-              name="Safety"
-              size={20}
-            />
-          )}
-        </View>
-      );
+    const handleModal = () =>{
+      setModalVisible(!modalVisible)
     };
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <>
       <Text variant='headlineSmall' style={styles.title}>Servicio a contratar</Text>
       <Text>Datos personales</Text>
       <TextInput
@@ -166,10 +153,6 @@ const Formulario = () => {
         onChange={item => {
           setValue(item.value);
         }}
-        renderLeftIcon={() => (
-          <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-        )}
-        renderItem={renderItem}
       />
       <TextInput
         label="Placa"
@@ -215,15 +198,11 @@ const Formulario = () => {
         onChange={item => {
           setValue(item.value);
         }}
-        renderLeftIcon={() => (
-          <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-        )}
-        renderItem={renderItem}
       />
       <Button icon="send-lock" mode="contained" onPress={() => handleSubmit()}>
         Enviar
       </Button>
-    </ScrollView> 
+    </>
   );
 };
 

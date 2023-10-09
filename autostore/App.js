@@ -6,44 +6,24 @@ import Formulario from './src/components/Formulario';
 
 export default function App() {
 
-  const [visible, setVisible] = React.useState(false);
-
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-  const containerStyle = {backgroundColor: 'white', padding: 20};
+  const [modalVisible,setModalVisible] = useState(false);
 
   return (
-    <View style={styles.container}>
-      <PaperProvider>
-        <Portal>
-          <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-            <Formulario/>
-          </Modal>
-        </Portal>
-      </PaperProvider>
-      <FAB
-        icon="plus"
-        style={styles.fab}
-        size='medium'
-        mode='elevated'
-        variant='primary'
-        onPress={() => showModal()}
-      />
-    </View>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.cotenedor}>
+         <Formulario
+         modalVisible={modalVisible}
+         setModalVisible={setModalVisible}/>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
+  cotenedor: {
+    marginTop: 32,
+    paddingHorizontal: 24,
   },
 });

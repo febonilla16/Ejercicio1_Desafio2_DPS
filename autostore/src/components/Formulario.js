@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, Image, Pressable } from 'react-native';
 import { TextInput, Button, Text, HelperText, Snackbar, Modal, Portal, PaperProvider } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
 
@@ -231,19 +231,15 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         <View style={styles.contenedor}>
           <Pressable style={styles.btnAtras} onPress={handleModal}>
             <Text style={styles.btnText}></Text>
-            <Image source={require('../img/arrow-left.png')} style={styles.imagen}/>
+            <Image source={require('../../img/arrow-left.png')} style={styles.imagen}/>
           </Pressable>
-            <Text style={styles.listaEmpleados}>Lista de servicios agendados</Text>  
-            {servicios.length === 0 ? <Text style={styles.sinEmpleados}>No hay servicios registrados</Text>: 
+            <Text style={styles.listaServicios}>Lista de servicios agendados</Text>  
+            {servicios.length === 0 ? <Text>No hay servicios registrados</Text>: 
           <FlatList
-            style={styles.listadoEmpleados}
+            style={styles.listadoServicios}
             data={servicios}
             keyExtractor={(item) => item.id}
             renderItem={({item}) => {
-              return(
-              <Empleado
-              item={item}/>
-              )
             }}
             />
           }
@@ -354,10 +350,10 @@ const styles = StyleSheet.create({
   }, contenedor: {
       marginTop: 32,
       paddingHorizontal: 24,
-  },listadoEmpleados:{
+  },listadoServicios:{
     marginTop:50,
     marginHorizontal: 30,
-  }, listaEmpleados: {
+  }, listaServicios: {
     marginTop: 20,
     textAlign: 'center',
     fontWeight:'900',

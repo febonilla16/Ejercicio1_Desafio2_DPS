@@ -2,7 +2,7 @@ import React from 'react'
 import {View, Text,StyleSheet} from 'react-native'
 
 function Servicio({item}) {
-  const {nombre, apellido, año, color, placa, marca, costoServicio, total} = item
+  const {nombre, apellido, año, color, placa, marca, vehiculo, service, costoServicio, total} = item
   return (
    <View style={styles.contenedor}>
     <View style={styles.contenedorTextoFila}>
@@ -11,14 +11,15 @@ function Servicio({item}) {
     <View style={styles.contenedorTexto}>
       <View style={styles.contenedorTextoFila}>
         <Text>Vehículo</Text>
-        <Text style={styles.bold}>Tipo Vehiculo:</Text><Text>Sedán</Text>
+        <Text style={styles.bold}>Tipo Vehiculo:</Text><Text>{vehiculo}</Text>
         <Text style={styles.bold}>Marca:</Text><Text>{marca}</Text>
         <Text style={styles.bold}>Año:</Text><Text>{año}</Text>
         <Text style={styles.bold}>Placa:</Text><Text>{placa}</Text>
         <Text style={styles.bold}>Color:</Text><Text>{color}</Text>
       </View>
       <View style={styles.contenedorTextoFila}>
-        <Text style={styles.bold}>costoServicio: </Text><Text>$ {costoServicio}</Text>
+      <Text style={styles.bold}>Tipo de Servicio:</Text><Text>{service}</Text>
+        <Text style={styles.bold}>Costo: </Text><Text>$ {costoServicio}</Text>
       </View>
     </View>
     <View style={styles.contenedorTexto}>

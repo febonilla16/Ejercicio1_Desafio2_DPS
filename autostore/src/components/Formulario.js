@@ -52,8 +52,6 @@ const Formulario = ({modalVisible,setModalVisible}) => {
           case '5':
             setVehiculo('Bus');
           break;
-        default:
-          break;
       }
     }
 
@@ -116,7 +114,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
             setCostoServicio(60.00);
           } 
           break;
-        default:
+          default:
             break;
     }
     }
@@ -151,6 +149,8 @@ const Formulario = ({modalVisible,setModalVisible}) => {
           color,
           placa,
           marca,
+          vehiculo,
+          service,
           costoServicio,
           total
         }
@@ -203,8 +203,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder="Seleccione un tipo de vehículo"
-        value={value}
+        value={tipoVehiculo.value}
         onChange={item => {
           handleVehiculo(item.value);
         }}
@@ -248,8 +247,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder="Seleccione un tipo de servicio"
-        value={value}
+        value={tipoServicio.value}
         onChange={item => {
           handleServicio(item.value);
         }}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, Image, Pressable } from 'react-native';
 import { TextInput, Button, Text, HelperText, Snackbar, Modal, Portal, PaperProvider } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
+import Servicio from './Servicio';
 
 const Formulario = ({modalVisible,setModalVisible}) => {
     const [nombre, setNombre] = useState('');
@@ -26,10 +27,6 @@ const Formulario = ({modalVisible,setModalVisible}) => {
 
     const [costoServicio, setCostoServicio] = useState(0);
     const [total, setTotal] = useState(0);
-
-    const handleNombreChange = (text) => {
-        setNombre(text);
-    };
 
     const handleSubmit = () => {
         const impuesto = 0.13;
@@ -97,7 +94,8 @@ const Formulario = ({modalVisible,setModalVisible}) => {
               break;
             case '4':
               if (tipoVehiculo.value === '1') {
-                //alert
+                alert('No aplica el polarizado para motocicleta');
+                return;
               } else if (tipoVehiculo.value === '2') {
                   setCostoServicio(25.00);
               } else if (tipoVehiculo.value === '3') {
@@ -112,7 +110,18 @@ const Formulario = ({modalVisible,setModalVisible}) => {
                 break;
         }
         setTotal(((costoServicio*propina) + (costoServicio*impuesto) + costoServicio).toFixed(2));
+       
+        setServicios(...servicios, nuevoServicio);
+        setModalVisible(!modalVisible);
+
+        setNombre('');
+        setApellido('');
+        setAño(0);
+        setPlaca('');
+        setColor('');
+        setMarca('');
     };
+
     const [servicios, setServicios] = useState([]);
 
     const nuevoServicio = {
@@ -126,17 +135,7 @@ const Formulario = ({modalVisible,setModalVisible}) => {
       costoServicio,
       total
     }
-
-    setServicios(...servicios, nuevoServicio);
-    setModalVisible(!modalVisible);
-
-    setNombre('');
-    setApellido('');
-    setAño(0);
-    setPlaca('');
-    setColor('');
-    setMarca('');
-    
+   
     const [value, setValue] = useState(null);
 
     const handleModal = () =>{
@@ -240,6 +239,10 @@ const Formulario = ({modalVisible,setModalVisible}) => {
             data={servicios}
             keyExtractor={(item) => item.id}
             renderItem={({item}) => {
+              return(
+                <Servicio
+                item={item}/>
+              )
             }}
             />
           }

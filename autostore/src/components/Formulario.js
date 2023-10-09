@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, Image, Pressable } from 'react-native';
-import { TextInput, Button, Text, HelperText, Snackbar, Modal, Portal, PaperProvider } from 'react-native-paper';
+import { View, ScrollView, StyleSheet, Image, Pressable, Modal } from 'react-native';
+import { TextInput, Button, Text, HelperText, Snackbar, Portal, PaperProvider } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
 import Servicio from './Servicio';
 
@@ -110,7 +110,19 @@ const Formulario = ({modalVisible,setModalVisible}) => {
                 break;
         }
         setTotal(((costoServicio*propina) + (costoServicio*impuesto) + costoServicio).toFixed(2));
-       
+        
+        const nuevoServicio = {
+          id : Date.now(),
+          nombre,
+          apellido,
+          año,
+          color,
+          placa,
+          marca,
+          costoServicio,
+          total
+        }
+        
         setServicios(...servicios, nuevoServicio);
         setModalVisible(!modalVisible);
 
@@ -123,18 +135,6 @@ const Formulario = ({modalVisible,setModalVisible}) => {
     };
 
     const [servicios, setServicios] = useState([]);
-
-    const nuevoServicio = {
-      id : Date.now(),
-      nombre,
-      apellido,
-      año,
-      color,
-      placa,
-      marca,
-      costoServicio,
-      total
-    }
    
     const [value, setValue] = useState(null);
 
